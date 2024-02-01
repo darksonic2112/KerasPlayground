@@ -41,6 +41,11 @@ for i in range(1000):
     random_older = randint(65, 100)
     train_samples.append(random_older)
     train_labels.append(1)
+
+train_labels = np.array(train_labels)
+train_samples = np.array(train_samples)
+train_labels, train_samples = shuffle(train_labels, train_samples)
+
 """
 for age, effect in zip(train_samples, train_labels):
     print("Patient with the age {age} experienced the effects {effect}".format(age=age, effect=effect))
@@ -58,14 +63,34 @@ print("Of {young} young people, {young_side_effects} experienced side-effects.\n
 plt.title("Experienced side effects of young and old people")
 plt.show()
 """
+test_labels = []
+test_samples = []
 
-train_labels = np.array(train_labels)
-train_samples = np.array(train_samples)
-train_labels, train_samples = shuffle(train_labels, train_samples)
+for i in range(10):
+    random_younger = randint(13, 64)
+    test_samples.append(random_younger)
+    test_labels.append(1)
+
+    random_older = randint(65, 100)
+    test_samples.append(random_older)
+    test_labels.append(0)
+
+for i in range(200):
+    random_younger = randint(13, 64)
+    test_samples.append(random_younger)
+    test_labels.append(0)
+
+    random_older = randint(65, 100)
+    test_samples.append(random_older)
+    test_labels.append(1)
+
+test_labels = np.array(test_labels)
+test_samples = np.array(test_samples)
+test_labels, test_samples = shuffle(test_labels, test_samples)
 
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled_train_samples = scaler.fit_transform(train_samples.reshape(-1, 1))
-
+scaled_test_samples = scaler.fit_transform(test_samples.reshape(-1, 1))
 """
 for i in scaled_train_samples:
     print(i)
@@ -81,3 +106,8 @@ model.summary()
 
 model.compile(optimizer=Adam(learning_rate=0.0001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.fit(x=scaled_train_samples, y=train_labels, validation_split=0.1, batch_size=10, epochs=30, shuffle=True, verbose=2)
+
+predictions = model.predict(x=scaled_test_samples, batch_size=10, verbose=0)
+
+for i in predictions:
+    print(i)
