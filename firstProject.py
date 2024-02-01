@@ -34,7 +34,7 @@ for i in range(1000):
     random_older = randint(65, 100)
     train_samples.append(random_older)
     train_labels.append(1)
-
+"""
 for age, effect in zip(train_samples, train_labels):
     print("Patient with the age {age} experienced the effects {effect}".format(age=age, effect=effect))
     if age > 64 and effect:
@@ -50,3 +50,14 @@ print("Of {young} young people, {young_side_effects} experienced side-effects.\n
 
 plt.title("Experienced side effects of young and old people")
 plt.show()
+"""
+
+train_labels = np.array(train_labels)
+train_samples = np.array(train_samples)
+train_labels, train_samples = shuffle(train_labels, train_samples)
+
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_train_samples = scaler.fit_transform(train_samples.reshape(-1, 1))
+
+for i in scaled_train_samples:
+    print(i)
