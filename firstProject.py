@@ -4,6 +4,7 @@ from sklearn.utils import shuffle
 from sklearn.preprocessing import MinMaxScaler
 import itertools
 import matplotlib.pyplot as plt
+import os.path
 
 import tensorflow as tf
 from tensorflow import keras
@@ -11,6 +12,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import categorical_crossentropy
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import model_from_json
 
 from sklearn.metrics import confusion_matrix
 import itertools
@@ -149,3 +152,16 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 
 cm_plot_labels = ['no_side_effects', 'had_side_effects']
 plot_confusion_matrix(cm=cm, classes=cm_plot_labels, title='Confusion Matrix')
+
+if os.path.isfile('models/medical_trial_model.h5') is False:
+    model.save('models/medical_trial_model.h5')
+
+new_model = load_model('models/medical_trial_model.h5')
+new_model.get_weights()
+
+json_string = model.to_json()
+
+print(json_string)
+
+model_architecture = model_from_json(json_string)
+model_architecture.summary()
