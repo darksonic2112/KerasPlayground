@@ -16,8 +16,6 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
 
 from sklearn.metrics import confusion_matrix
-import itertools
-import matplotlib.pyplot as plt
 
 train_samples = []
 train_labels = []
